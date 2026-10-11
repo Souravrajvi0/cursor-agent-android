@@ -55,7 +55,7 @@ class BiometricHelper @Inject constructor(
         )
 
         val info = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Unlock Cursor Mobile")
+            .setTitle("Unlock Agent Remote")
             .setSubtitle("Verify your identity")
             .setAllowedAuthenticators(
                 BiometricManager.Authenticators.BIOMETRIC_STRONG

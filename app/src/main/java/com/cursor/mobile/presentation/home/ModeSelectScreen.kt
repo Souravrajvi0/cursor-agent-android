@@ -67,7 +67,7 @@ fun ModeSelectScreen(
             )
 
             Text(
-                text = "Cursor Mobile",
+                text = "Agent Remote",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold
             )
