@@ -20,12 +20,12 @@ fun signingValue(envName: String, propName: String): String? =
 
 android {
     namespace = "com.cursor.mobile"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.cursor.mobile"
+        applicationId = "com.souravrajvi.agentremote"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 2
         versionName = "1.1"
 
@@ -54,6 +54,20 @@ android {
                 this.keyAlias = keyAlias
                 this.keyPassword = keyPassword
             }
+        }
+    }
+
+    flavorDimensions += "dist"
+    productFlavors {
+        // Google Play build: no self-updater (Play forbids updating outside Play).
+        create("play") {
+            dimension = "dist"
+            buildConfigField("boolean", "OTA_UPDATES", "false")
+        }
+        // Sideload build distributed through GitHub Releases, with in-app OTA updates.
+        create("github") {
+            dimension = "dist"
+            buildConfigField("boolean", "OTA_UPDATES", "true")
         }
     }
 
