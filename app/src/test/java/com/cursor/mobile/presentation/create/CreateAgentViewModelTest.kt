@@ -27,7 +27,7 @@ class CreateAgentViewModelTest {
     @Before
     fun setup() {
         repository = mockk(relaxed = true)
-        viewModel = CreateAgentViewModel(repository)
+        viewModel = CreateAgentViewModel(repository, mockk(relaxed = true))
     }
 
     @Test

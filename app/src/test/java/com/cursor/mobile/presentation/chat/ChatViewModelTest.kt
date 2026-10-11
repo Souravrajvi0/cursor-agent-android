@@ -29,7 +29,7 @@ class ChatViewModelTest {
     fun setup() {
         repository = mockk(relaxed = true)
         val savedStateHandle = SavedStateHandle().apply { set("agentId", "agent-1") }
-        viewModel = ChatViewModel(savedStateHandle, repository)
+        viewModel = ChatViewModel(savedStateHandle, repository, mockk(relaxed = true))
     }
 
     @Test
