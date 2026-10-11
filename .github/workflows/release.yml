@@ -54,13 +54,13 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: ./gradlew :app:assembleRelease
+        run: ./gradlew :app:assembleGithubRelease
 
       - name: Rename APK
         run: |
           mkdir -p release-assets
-          cp app/build/outputs/apk/release/app-release.apk \
-            release-assets/cursor-mobile-v${{ steps.version.outputs.version_name }}.apk
+          cp app/build/outputs/apk/github/release/app-github-release.apk \
+            release-assets/agent-remote-v${{ steps.version.outputs.version_name }}.apk
 
       - name: Generate update.json
         run: |
@@ -71,7 +71,7 @@ jobs:
           jq -n \
             --arg versionCode "${{ steps.version.outputs.version_code }}" \
             --arg versionName "${{ steps.version.outputs.version_name }}" \
-            --arg apkUrl "https://github.com/${{ github.repository }}/releases/download/${{ steps.version.outputs.tag_name }}/cursor-mobile-v${{ steps.version.outputs.version_name }}.apk" \
+            --arg apkUrl "https://github.com/${{ github.repository }}/releases/download/${{ steps.version.outputs.tag_name }}/agent-remote-v${{ steps.version.outputs.version_name }}.apk" \
             --arg releaseNotes "$TAG_MESSAGE" \
             '{
               versionCode: ($versionCode | tonumber),

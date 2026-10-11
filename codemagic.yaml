@@ -21,11 +21,11 @@ workflows:
           include: true
     scripts:
       - name: Run unit tests
-        script: ./gradlew :app:testDebugUnitTest
+        script: ./gradlew :app:testGithubDebugUnitTest
       - name: Build debug APK
-        script: ./gradlew :app:assembleDebug
+        script: ./gradlew :app:assembleGithubDebug
     artifacts:
-      - app/build/outputs/apk/debug/*.apk
+      - app/build/outputs/apk/github/debug/*.apk
       - app/build/reports/tests/**
 
   android-release:
@@ -43,6 +43,6 @@ workflows:
       - name: Build release APK
         script: |
           export KEYSTORE_PATH=release.keystore
-          ./gradlew :app:assembleRelease
+          ./gradlew :app:assembleGithubRelease
     artifacts:
-      - app/build/outputs/apk/release/*.apk
+      - app/build/outputs/apk/github/release/*.apk
