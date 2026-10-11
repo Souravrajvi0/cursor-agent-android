@@ -66,12 +66,13 @@ class UpdateManager @Inject constructor(
 
     companion object {
         private const val MANIFEST_URL =
-            "https://github.com/chandradcp/cursor-mobile-android/releases/latest/download/update.json"
+            "https://github.com/Souravrajvi0/cursor-agent-android/releases/latest/download/update.json"
         private const val APK_NAME = "update.apk"
         private const val UPDATE_DIR = "updates"
     }
 
     fun showUpdateDialog() {
+        if (!BuildConfig.OTA_UPDATES) return
         _dialogVisible.value = true
     }
 
@@ -80,12 +81,14 @@ class UpdateManager @Inject constructor(
     }
 
     suspend fun autoCheck() {
+        if (!BuildConfig.OTA_UPDATES) return
         if (autoChecked) return
         autoChecked = true
         checkInternal(silent = true)
     }
 
     suspend fun manualCheck() {
+        if (!BuildConfig.OTA_UPDATES) return
         checkInternal(silent = false)
     }
 

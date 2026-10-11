@@ -405,53 +405,55 @@ fun SettingsScreen(
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     }
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                when (updateState) {
-                                    is UpdateState.Available,
-                                    is UpdateState.ReadyToInstall -> settingsViewModel.showUpdateDialog()
-                                    else -> settingsViewModel.checkForUpdates()
-                                }
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.SystemUpdate,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text("Check for updates", style = MaterialTheme.typography.bodyLarge)
-                            Text(
-                                updateSubtitle,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = updateSubtitleColor
-                            )
-                        }
-                        if (updateState is UpdateState.Checking) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                strokeWidth = 2.dp
-                            )
-                        } else {
+                    if (BuildConfig.OTA_UPDATES) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    when (updateState) {
+                                        is UpdateState.Available,
+                                        is UpdateState.ReadyToInstall -> settingsViewModel.showUpdateDialog()
+                                        else -> settingsViewModel.checkForUpdates()
+                                    }
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Icon(
-                                Icons.Default.ChevronRight,
+                                imageVector = Icons.Default.SystemUpdate,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
                             )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Check for updates", style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    updateSubtitle,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = updateSubtitleColor
+                                )
+                            }
+                            if (updateState is UpdateState.Checking) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(20.dp),
+                                    strokeWidth = 2.dp
+                                )
+                            } else {
+                                Icon(
+                                    Icons.Default.ChevronRight,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        HorizontalDivider()
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                    HorizontalDivider()
-                    Spacer(modifier = Modifier.height(16.dp))
-
                     Text(
-                        "Cursor Mobile v${BuildConfig.VERSION_NAME}",
+                        "Agent Remote v${BuildConfig.VERSION_NAME}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(
