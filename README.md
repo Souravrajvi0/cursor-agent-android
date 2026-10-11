@@ -1,4 +1,4 @@
-# Cursor Mobile for Android
+# Agent Remote (unofficial Cursor client for Android)
 
 A native Android companion app for controlling Cursor AI coding agents from your phone. Built with Kotlin, Jetpack Compose, and Hilt.
 
@@ -42,16 +42,16 @@ The app can update itself over-the-air from GitHub Releases.
 1. Generate a release keystore (keep it outside the repo and back it up):
 
    ```bash
-   keytool -genkeypair -v -keystore ~/keystores/cursor-mobile.keystore \
-     -alias cursor-mobile -keyalg RSA -keysize 2048 -validity 10000
+   keytool -genkeypair -v -keystore ~/keystores/agent-remote.keystore \
+     -alias agent-remote -keyalg RSA -keysize 2048 -validity 10000
    ```
 
 2. Add the four signing values as GitHub secrets:
 
    ```bash
-   gh secret set KEYSTORE_BASE64 --body "$(base64 -i ~/keystores/cursor-mobile.keystore)"
+   gh secret set KEYSTORE_BASE64 --body "$(base64 -i ~/keystores/agent-remote.keystore)"
    gh secret set KEYSTORE_PASSWORD
-   gh secret set KEY_ALIAS --body "cursor-mobile"
+   gh secret set KEY_ALIAS --body "agent-remote"
    gh secret set KEY_PASSWORD
    ```
 
@@ -107,7 +107,7 @@ To control an agent on your local machine:
 Run unit tests:
 
 ```bash
-./gradlew :app:testDebugUnitTest
+./gradlew :app:testPlayDebugUnitTest
 ```
 
 ## License
@@ -118,3 +118,12 @@ This project is **not affiliated with Anysphere, Inc. or Cursor**. "Cursor" and 
 marks are trademarks of their respective owner and are used here only nominatively to
 describe interoperability with the Cursor API. No Cursor brand assets (logos, icons) are
 included in this repository; the app ships with its own original launcher icon.
+
+## Build variants
+
+| Flavor | Purpose | Self-updater |
+|--------|---------|--------------|
+| `play` | Google Play (`bundlePlayRelease` produces the AAB) | Disabled, no `REQUEST_INSTALL_PACKAGES` |
+| `github` | Sideloaded APK from GitHub Releases (`assembleGithubRelease`) | Enabled |
+
+See [docs/PLAY_STORE.md](docs/PLAY_STORE.md) for the Google Play publishing checklist.
