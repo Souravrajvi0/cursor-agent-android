@@ -1,0 +1,48 @@
+# Codemagic CI. Two workflows:
+#   android-debug   - quick debug APK, no secrets needed
+#   android-release - signed release APK, needs the "signing" variable group
+#
+# Create the "signing" group in Codemagic (Teams > Global variables and secrets)
+# with: KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD
+# (same values as the GitHub secrets used by .github/workflows/release.yml).
+
+workflows:
+  android-debug:
+    name: Android debug APK
+    instance_type: linux_x2
+    max_build_duration: 30
+    environment:
+      java: 17
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Run unit tests
+        script: ./gradlew :app:testDebugUnitTest
+      - name: Build debug APK
+        script: ./gradlew :app:assembleDebug
+    artifacts:
+      - app/build/outputs/apk/debug/*.apk
+      - app/build/reports/tests/**
+
+  android-release:
+    name: Android signed release APK
+    instance_type: linux_x2
+    max_build_duration: 30
+    environment:
+      java: 17
+      groups:
+        - signing
+    scripts:
+      - name: Decode keystore
+        script: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > "$CM_BUILD_DIR/release.keystore"
+      - name: Build release APK
+        script: |
+          export KEYSTORE_PATH=release.keystore
+          ./gradlew :app:assembleRelease
+    artifacts:
+      - app/build/outputs/apk/release/*.apk
